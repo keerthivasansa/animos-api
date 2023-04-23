@@ -1,0 +1,16 @@
+{
+  "name": "animos-api",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "An API to access the latest anime-offline-database and mapping different services.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Keerthi Vasan S A",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2"
+  }
+}
