@@ -1,14 +1,35 @@
 import express from "express";
 import { readFile } from "fs/promises"
-import { readFileSync } from "fs";
+import { readFileSync, existsSync, mkdirSync, writeFileSync } from "fs";
 import { outputPath } from "./config.js";
 import { join } from "path";
+import axios from "axios";
+import { convertStore } from "./convert.js";
 
 const app = express();
 
 const serverUpdate = new Date().toString();
+const JSON_PATH = join(outputPath, "converted.json");
+const res = existsSync(JSON_PATH);
 
-const store = JSON.parse(readFileSync(join(outputPath, "converted.json"), "utf-8"))
+let store = {};
+
+if (!res) {
+    console.log("Missing JSON file, downloading. . .");
+    if (!existsSync("assets"))
+        mkdirSync("assets");
+
+    axios.get("https://raw.githubusercontent.com/Fribb/anime-lists/master/anime-list-full.json").then(resp => {
+        const data = resp.data;
+        store = convertStore(data);
+        writeFileSync(JSON_PATH, JSON.stringify(store));
+    })
+} else {
+    console.log("IDs already cached.");
+    store = JSON.parse(readFileSync(JSON_PATH, "utf-8"))
+    console.log(store);
+}
+
 
 app.get("/mappings/:malId", (req, res) => {
     const { malId } = req.params;
