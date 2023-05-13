@@ -25,9 +25,7 @@ if (!res) {
         writeFileSync(JSON_PATH, JSON.stringify(store));
     })
 } else {
-    console.log("IDs already cached.");
     store = JSON.parse(readFileSync(JSON_PATH, "utf-8"))
-    console.log(store);
 }
 
 
